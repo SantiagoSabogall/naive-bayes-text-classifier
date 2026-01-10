@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+venv/
+.env/
+
+.ipynb_checkpoints/
+
+Thumbs.db
+
+
+# Data (no subir datos crudos)
+data/raw/*
+!data/raw/README.md
+
+# Results
+results/*.csv
+results/*.json
