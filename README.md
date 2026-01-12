@@ -45,22 +45,22 @@ Each stage is modularized to allow easy experimentation and extension.
 ---
 
 ## 📁 Project Structure
+### Estructura del Proyecto
 
-naive-bayes-text-classifier/
-├── data/
-│ ├── raw/ # Original datasets (not tracked)
-│ └── processed/ # Cleaned and processed data
-├── notebooks/ # Exploratory analysis and experiments
-├── src/
-│ ├── preprocessing.py
-│ ├── model.py
-│ ├── train.py
-│ └── evaluate.py
-├── results/ # Generated metrics and outputs
-├── report/ # Project report (PDF / LaTeX)
+```text
 ├── README.md
 ├── requirements.txt
-└── .gitignore
+├── data/
+│   └── processed/       # Conjuntos de datos limpios y procesados
+├── notebooks/           # Análisis exploratorio y experimentos
+├── report/              # Informe del proyecto (PDF / LaTeX)
+├── results/             # Métricas y resultados generados
+└── src/
+    ├── __init__.py
+    ├── preprocessing.py # Limpieza de texto y tokenización
+    ├── model.py         # Implementación de Naive Bayes
+    ├── train.py         # Pipeline de entrenamiento
+    └── evaluate.py      # Evaluación del modelo
 
 ## 🛠️ Installation
 
