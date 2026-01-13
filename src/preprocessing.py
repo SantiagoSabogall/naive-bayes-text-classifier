@@ -28,15 +28,15 @@ def  save_processed_data(data: pd.DataFrame, output_path: Path) -> None:
     data.to_csv(output_path, index=False)
     
     
-if __name__ == "__main__":
-    project_root = Path(__file__).resolve().parent.parent
 
-    input_file = project_root / "data" / "raw_data" / "train.csv"
-    output_file = project_root / "data" / "processed" / "data_processed.csv"
+project_root = Path(__file__).resolve().parent.parent
 
-    processed_data = load_and_process_data(input_file)
-    save_processed_data(processed_data, output_file)
-    
+input_file = project_root / "data" / "raw_data" / "train.csv"
+output_file = project_root / "data" / "processed" / "data_processed.csv"
+
+processed_data = load_and_process_data(input_file)
+save_processed_data(processed_data, output_file)
+
 
     
     

@@ -45,23 +45,51 @@ Each stage is modularized to allow easy experimentation and extension.
 ---
 
 ## 📁 Project Structure
-### Estructura del Proyecto
 
-```text
-├── README.md
-├── requirements.txt
-├── data/
-│   └── processed/       # Conjuntos de datos limpios y procesados
-├── notebooks/           # Análisis exploratorio y experimentos
-├── report/              # Informe del proyecto (PDF / LaTeX)
-├── results/             # Métricas y resultados generados
-└── src/
-    ├── __init__.py
-    ├── preprocessing.py # Limpieza de texto y tokenización
-    ├── model.py         # Implementación de Naive Bayes
-    ├── train.py         # Pipeline de entrenamiento
-    └── evaluate.py      # Evaluación del modelo
+├───data
+│   ├───processed
+│   │
+│   └───raw_data
+│
+├───models
+
+├───results
+│       classification_report.json
+│       confusion_matrix.png
+│
+└───src
+    │   evaluate.py
+    │   model.py
+    │   preprocessing.py
+    │   train.py
+    │   __init__.py
+
 
 ## 🛠️ Installation
 
 pip install -r requirements.txt
+
+## Usage
+
+1. Prerocess the data 
+
+python src/preprocessing.py
+
+2. Train the model
+
+python src/train.py
+
+3. Evaluate the model
+
+python src/train.py
+
+
+
+## 📊 Evaluation
+Model performance is evaluated using standard classification metrics, including
+precision, recall, F1-score, and the confusion matrix.
+
+The confusion matrix below is generated automatically during evaluation and saved
+in the `results/` directory.
+
+![Confusion Matrix](results/confusion_matrix.png)
