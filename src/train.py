@@ -1,53 +1,61 @@
+import argparse
 from pathlib import Path
 import pandas as pd
-from sklearn.model_selection import train_test_split
 import joblib
+from sklearn.model_selection import GridSearchCV
 
 from model import build_naive_bayes_model
 
 
-def split_features_labels(
-    data: pd.DataFrame,
-    test_size: float = 0.2,
-    random_state: int = 42
-):
+def train_model(data_path: Path, model_output_path: Path):
     """
-    Split the dataset into train and test sets.
+    Train the Naive Bayes text classifier using GridSearchCV and save the best model.
     """
-    X = data["Comment"]
-    y = data["Topic"]
-
-    return train_test_split(
-        X, y,
-        test_size=test_size,
-        random_state=random_state
-    )
-
-
-def train_model(
-    data_path: Path,
-    model_output_path: Path
-):
-    """
-    Train the Naive Bayes text classifier and save the trained model.
-    """
+    print(f"Loading training data from {data_path}...")
     data = pd.read_csv(data_path)
-
-    X_train, X_test, y_train, y_test = split_features_labels(data)
+    
+    X_train = data["Comment"]
+    y_train = data["Topic"]
 
     model = build_naive_bayes_model()
-    model.fit(X_train, y_train)
+
+    param_grid = {
+        'vectorizer__max_features': [10000, 20000, None],
+        'vectorizer__ngram_range': [(1, 1), (1, 2)],
+        'vectorizer__stop_words': [None, 'english'],
+        'classifier__alpha': [0.1, 0.5, 1.0]
+    }
+
+    print("Starting Grid Search Cross-Validation...")
+    grid_search = GridSearchCV(
+        model,
+        param_grid,
+        cv=5,
+        scoring='f1_macro',
+        n_jobs=-1,
+        verbose=1
+    )
+
+    grid_search.fit(X_train, y_train)
+
+    print(f"\nBest parameters found: {grid_search.best_params_}")
+    print(f"Best cross-validation F1 score: {grid_search.best_score_:.4f}")
+
+    best_model = grid_search.best_estimator_
 
     model_output_path.parent.mkdir(parents=True, exist_ok=True)
-    joblib.dump(model, model_output_path)
+    joblib.dump(best_model, model_output_path)
+    print(f"Model saved successfully to {model_output_path}")
 
-    return model, X_test, y_test
+
+def main():
+    parser = argparse.ArgumentParser(description="Train a Naive Bayes model using TF-IDF and GridSearchCV")
+    parser.add_argument("--train-data", type=Path, default=Path("data/processed/train.csv"), help="Path to train csv data")
+    parser.add_argument("--model-output", type=Path, default=Path("models/naive_bayes.joblib"), help="Output path for the trained model")
+    args = parser.parse_args()
+
+    train_model(args.train_data, args.model_output)
 
 
 if __name__ == "__main__":
-    project_root = Path(__file__).resolve().parent.parent
-
-    data_path = project_root / "data" / "processed" / "data_processed.csv"
-    model_path = project_root / "models" / "naive_bayes.joblib"
-
-    train_model(data_path, model_path)
+    main()

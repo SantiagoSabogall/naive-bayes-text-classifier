@@ -67,23 +67,30 @@ Each stage is modularized to allow easy experimentation and extension.
 
 ## 🛠️ Installation
 
+```bash
 pip install -r requirements.txt
+```
 
 ## Usage
 
-1. Prerocess the data 
+The scripts now use `argparse` for flexible execution. You can check the available options by running `python src/<script_name>.py --help`. 
 
+Using the defaults:
+
+1. Preprocess the data (cleans and splits into `train.csv` and `test.csv`):
+```bash
 python src/preprocessing.py
+```
 
-2. Train the model
-
+2. Train the model (uses GridSearch with TF-IDF):
+```bash
 python src/train.py
+```
 
-3. Evaluate the model
-
-python src/train.py
-
-
+3. Evaluate the model:
+```bash
+python src/evaluate.py
+```
 
 ## 📊 Evaluation
 Model performance is evaluated using standard classification metrics, including

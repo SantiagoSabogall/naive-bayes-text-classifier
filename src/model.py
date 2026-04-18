@@ -1,33 +1,23 @@
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
-
-def build_naive_bayes_model(max_features: int | None = 20_000,
-                            ngram_range: tuple[int, int] = (1, 1),
-                            alpha: float = 1.0
-                            ) -> Pipeline:
+def build_naive_bayes_model() -> Pipeline:
     """
-    Build a text classification pipeline using CountVectorizer
+    Build a text classification pipeline using TfidfVectorizer
     and Multinomial Naive Bayes.
+    
+    Parameters are left to defaults to be optimized via GridSearchCV.
     """
-    vectorizer = CountVectorizer(
-        max_features=max_features,
-        ngram_range=ngram_range
+    vectorizer = TfidfVectorizer(
+        # Default initialization; params will be tuned via GridSearch
     )
 
     classifier = MultinomialNB(
-        alpha=alpha,
         fit_prior=True
     )
 
     return Pipeline([
         ("vectorizer", vectorizer),
         ("classifier", classifier),
-    ])
-
-
-
-
-
-                                                 
+    ])
